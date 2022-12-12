@@ -1,0 +1,41 @@
+Commands for creating VHost in nginx :-
+1.mkdir /var/www/xyz
+2.cd var/www/xyz
+3.sudo vim index.php
+	<?php
+	echo "My first PHP script!";
+	?>
+
+4.sudo vim /etc/nginx/sites-available/xyz.conf
+	server {
+        listen 80;
+        listen [::]:80;
+
+        root /var/www/xyz;
+
+        index index.php index.htm index.nginx-debian.html;
+
+        server_name aashish.medtraining.com  www.aashish.medtraining.com;
+
+        location / {
+                try_files $uri $uri/ =404;
+        }
+
+        location ~ \.php$ {
+                include snippets/fastcgi-php.conf;
+
+                fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
+        #       fastcgi_pass 127.0.0.1:9000;
+        }
+       location ~ /\.ht {
+               deny all;
+        }
+
+
+5.sudo ln -s /etc/nginx/sites-available/xyz.conf /etc/nginx/sites-enabled/
+6. sudo nginx -t
+8. sudo vim /etc/hosts
+	add server name 
+7. sudo sytemctl restart nginx
+
+
